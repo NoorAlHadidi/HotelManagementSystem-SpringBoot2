@@ -12,15 +12,15 @@ import org.springframework.stereotype.Component;
 @Entity
 public class Reservation {
     @Id
-    private int id;
-    private int user;
-    private int room;
+    private Integer id;
+    private Integer user;
+    private Integer room;
     private Date checkin;
     private Date checkout;
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 
-    enum ReservationStatus {
+    public enum ReservationStatus {
         pending,
         booked,
         cancelled

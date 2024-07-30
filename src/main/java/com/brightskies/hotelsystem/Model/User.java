@@ -8,8 +8,20 @@ import org.springframework.stereotype.Component;
 @Entity
 public class User {
     @Id
-    private int id;
+    private Integer id;
     private String name;
     private String email;
     private String phone;
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
 }

@@ -10,19 +10,19 @@ import org.springframework.stereotype.Component;
 @Entity
 public class Room {
     @Id
-    private int id;
+    private Integer id;
     @Enumerated(EnumType.STRING)
     private RoomType type;
     @Enumerated(EnumType.STRING)
     private RoomStatus status;
 
-    enum RoomType {
+    public enum RoomType {
         singleroom,
         doubleroom,
         familyroom,
         suite
     }
-    enum RoomStatus {
+    public enum RoomStatus {
         available,
         booked
     }
