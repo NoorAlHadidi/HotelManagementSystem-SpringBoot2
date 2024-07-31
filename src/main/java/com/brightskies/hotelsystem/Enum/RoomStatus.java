@@ -1,6 +1,11 @@
 package com.brightskies.hotelsystem.Enum;
 
 public enum RoomStatus {
-    available,
-    booked
+    available("available"),
+    booked("booked");
+
+    private String name;
+    RoomStatus(String name) {
+        this.name = name;
+    }
 }

@@ -27,12 +27,12 @@ public class RoomController {
         return ResponseEntity.ok(roomService.displayRooms());
     }
 
-    @GetMapping("/display/{status}")
+    @GetMapping("/display/status/{status}")
     public ResponseEntity<List<RoomDTO>> filterRoomsByStatus(@PathVariable RoomStatus status) {
         return ResponseEntity.ok(roomService.filterByStatus(status));
     }
 
-    @GetMapping("/display/{type}")
+    @GetMapping("/display/type/{type}")
     public ResponseEntity<List<RoomDTO>> filterRoomsByType(@PathVariable RoomType type) {
         return ResponseEntity.ok(roomService.filterByType(type));
     }

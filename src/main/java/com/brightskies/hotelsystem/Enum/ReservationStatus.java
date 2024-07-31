@@ -1,7 +1,12 @@
 package com.brightskies.hotelsystem.Enum;
 
 public enum ReservationStatus {
-    pending,
-    booked,
-    cancelled
+    pending("pending"),
+    booked("booked"),
+    cancelled("cancelled");
+
+    private String name;
+    ReservationStatus(String name) {
+        this.name = name;
+    }
 }

@@ -23,7 +23,7 @@ public class UserService {
     }
 
     public boolean addUser(User user) {
-        if(userRepository.findByNameAndPhone(user.getName(), user.getPhone()).isEmpty()) {
+        if(userRepository.findByPhone(user.getPhone()).isEmpty()) {
             userRepository.save(user);
             return true;
         }

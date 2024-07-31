@@ -17,4 +17,28 @@ public class Reservation {
     private Date checkout;
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
+
+    public Long getId() {
+        return id;
+    }
+
+    public Long getUser() {
+        return user;
+    }
+
+    public Long getRoom() {
+        return room;
+    }
+
+    public Date getCheckin() {
+        return checkin;
+    }
+
+    public Date getCheckout() {
+        return checkout;
+    }
+
+    public ReservationStatus getStatus() {
+        return status;
+    }
 }
