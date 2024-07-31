@@ -18,6 +18,10 @@ public class Reservation {
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 
+    public Reservation() {
+
+    }
+
     public Long getId() {
         return id;
     }

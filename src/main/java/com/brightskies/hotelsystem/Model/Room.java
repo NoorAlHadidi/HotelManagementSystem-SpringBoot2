@@ -16,6 +16,10 @@ public class Room {
     @Enumerated(EnumType.STRING)
     private RoomStatus status;
 
+    public Room() {
+
+    }
+
     public Room(RoomType type, RoomStatus status) {
         this.type = type;
         this.status = status;
