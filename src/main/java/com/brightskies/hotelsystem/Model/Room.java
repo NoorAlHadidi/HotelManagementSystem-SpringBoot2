@@ -1,29 +1,26 @@
 package com.brightskies.hotelsystem.Model;
 
+import com.brightskies.hotelsystem.Enum.RoomStatus;
+import com.brightskies.hotelsystem.Enum.RoomType;
+
 import jakarta.persistence.*;
 
 @Entity
 public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     @Enumerated(EnumType.STRING)
     private RoomType type;
     @Enumerated(EnumType.STRING)
     private RoomStatus status;
 
-    public enum RoomType {
-        singleroom,
-        doubleroom,
-        familyroom,
-        suite
-    }
-    public enum RoomStatus {
-        available,
-        booked
+    public Room(RoomType type, RoomStatus status) {
+        this.type = type;
+        this.status = status;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 

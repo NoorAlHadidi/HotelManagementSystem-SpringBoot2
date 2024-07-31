@@ -1,5 +1,7 @@
 package com.brightskies.hotelsystem.Model;
 
+import com.brightskies.hotelsystem.Enum.ReservationStatus;
+
 import java.sql.Date;
 
 import jakarta.persistence.*;
@@ -8,17 +10,11 @@ import jakarta.persistence.*;
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    private Integer user;
-    private Integer room;
+    private Long id;
+    private Long user;
+    private Long room;
     private Date checkin;
     private Date checkout;
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
-
-    public enum ReservationStatus {
-        pending,
-        booked,
-        cancelled
-    }
 }

@@ -1,5 +1,8 @@
 package com.brightskies.hotelsystem.Service;
 
+import com.brightskies.hotelsystem.DTO.RoomDTO;
+import com.brightskies.hotelsystem.Enum.RoomStatus;
+import com.brightskies.hotelsystem.Enum.RoomType;
 import com.brightskies.hotelsystem.Model.Room;
 import com.brightskies.hotelsystem.Model.User;
 import com.brightskies.hotelsystem.Repository.RoomRepo;
@@ -7,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class RoomService {
@@ -17,8 +21,8 @@ public class RoomService {
         this.roomRepository =  roomRepository;
     }
 
-    public List<Room> displayRooms() {
-        return roomRepository.findAll();
+    public List<RoomDTO> displayRooms() {
+        return (roomRepository.findAll()).stream().map(room -> new RoomDTO(room.getType(), room.getStatus())).collect(Collectors.toList());
     }
 
     public boolean addRoom(Room newRoom) {
@@ -29,11 +33,11 @@ public class RoomService {
         return false;
     }
 
-    public List<Room> filterByStatus(Room.RoomStatus status) {
-        return roomRepository.findByStatus(status);
+    public List<RoomDTO> filterByStatus(RoomStatus status) {
+        return (roomRepository.findByStatus(status)).stream().map(room -> new RoomDTO(room.getType(), room.getStatus())).collect(Collectors.toList());
     }
 
-    public List<Room> filterRoomsByType(Room.RoomType type) {
-        return roomRepository.findByType(type);
+    public List<RoomDTO> filterByType(RoomType type) {
+        return (roomRepository.findByType(type)).stream().map(room -> new RoomDTO(room.getType(), room.getStatus())).collect(Collectors.toList());
     }
 }
