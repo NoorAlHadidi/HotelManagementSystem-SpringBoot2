@@ -1,5 +1,6 @@
 package com.brightskies.hotelsystem.Controller;
 
+import com.brightskies.hotelsystem.DTO.UserDTO;
 import com.brightskies.hotelsystem.Model.User;
 import com.brightskies.hotelsystem.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,16 +20,17 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping
-    public ResponseEntity<Void> addUser(@RequestBody User user) {
+    @PostMapping("/add")
+    public ResponseEntity<Void> addUser(@RequestBody UserDTO userDTO) {
+        User user = new User(userDTO.name(), userDTO.email(), userDTO.phone());
         if(userService.addUser(user)) {
             return ResponseEntity.status(HttpStatus.CREATED).build();
         }
         return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
 
-    @GetMapping
-    public ResponseEntity<List<User>> displayUsers() {
+    @GetMapping("/display")
+    public ResponseEntity<List<UserDTO>> displayUsers() {
         return ResponseEntity.ok(userService.displayUsers());
     }
 }

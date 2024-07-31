@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface RoomRepo extends JpaRepository<Room, Integer> {
-    List<Room> findByRoomStatus(Room.RoomStatus status);
-    List<Room> findByRoomType(Room.RoomType type);
+    List<Room> findByStatus(Room.RoomStatus status);
+    List<Room> findByType(Room.RoomType type);
 
 }

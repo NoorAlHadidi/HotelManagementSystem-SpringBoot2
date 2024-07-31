@@ -1,11 +1,13 @@
 package com.brightskies.hotelsystem.Service;
 
+import com.brightskies.hotelsystem.DTO.UserDTO;
 import com.brightskies.hotelsystem.Model.User;
 import com.brightskies.hotelsystem.Repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -16,13 +18,13 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<User> displayUsers() {
-        return userRepository.findAll();
+    public List<UserDTO> displayUsers() {
+        return (userRepository.findAll()).stream().map(user -> new UserDTO(user.getName(), user.getEmail(), user.getPhone())).collect(Collectors.toList());
     }
 
-    public boolean addUser(User newUser) {
-        if(userRepository.findByNameAndPhone(newUser.getName(), newUser.getPhone()).isPresent()) {
-            userRepository.save(newUser);
+    public boolean addUser(User user) {
+        if(userRepository.findByNameAndPhone(user.getName(), user.getPhone()).isEmpty()) {
+            userRepository.save(user);
             return true;
         }
         return false;

@@ -1,15 +1,11 @@
 package com.brightskies.hotelsystem.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import org.springframework.stereotype.Component;
+import jakarta.persistence.*;
 
-@Component
 @Entity
 public class Room {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Enumerated(EnumType.STRING)
     private RoomType type;
@@ -25,5 +21,17 @@ public class Room {
     public enum RoomStatus {
         available,
         booked
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public RoomType getType() {
+        return type;
+    }
+
+    public RoomStatus getStatus() {
+        return status;
     }
 }

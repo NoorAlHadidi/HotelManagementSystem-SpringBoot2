@@ -2,16 +2,12 @@ package com.brightskies.hotelsystem.Model;
 
 import java.sql.Date;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import org.springframework.stereotype.Component;
+import jakarta.persistence.*;
 
-@Component
 @Entity
 public class Reservation {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private Integer user;
     private Integer room;
