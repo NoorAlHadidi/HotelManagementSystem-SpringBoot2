@@ -13,10 +13,11 @@ import java.util.Optional;
 
 @Repository
 public interface ReservationRepo extends JpaRepository<Reservation, Long> {
-    /*@Modifying
+    @Modifying
     @Transactional
-    @Query("UPDATE reservation AS r SET r.status = 'cancelled' WHERE r.id = :id")
+    @Query("UPDATE Reservation r SET r.status = 'cancelled' WHERE r.id = :id")
     void cancelReservation(@Param("id") Long id);
-    @Query("SELECT * FROM reservation AS r WHERE r.user = :user AND (r.checkin BETWEEN :checkin AND :checkout) OR (r.checkin < :checkin AND NOT (r.checkout < :checkin))")
-    Optional<Reservation> findOverlappingUserAndDates(@Param("user") Long user, @Param("checkin") Date checkin, @Param("checkout") Date checkout);*/
+    @Query("SELECT r FROM Reservation r WHERE r.user = :user AND ((r.checkin BETWEEN :checkin AND :checkout) OR (r.checkin < :checkin AND r.checkout > :checkin))")
+    Optional<Reservation> findOverlappingUserAndDates(@Param("user") Long user, @Param("checkin") Date checkin, @Param("checkout") Date checkout);
+
 }

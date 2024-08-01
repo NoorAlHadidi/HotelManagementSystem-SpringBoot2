@@ -39,7 +39,7 @@ public class RoomController {
 
     @PostMapping("/add")
     public ResponseEntity<Void> addRoom(@RequestBody RoomDTO room) {
-        if(roomService.addRoom(new Room(room.type(), room.status()))) {
+        if(roomService.addRoom(new Room(room.section(), room.type(), room.status()))) {
             return ResponseEntity.status(HttpStatus.CREATED).build();
         }
         return ResponseEntity.status(HttpStatus.CONFLICT).build();

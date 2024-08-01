@@ -22,6 +22,13 @@ public class Reservation {
 
     }
 
+    public Reservation(Long user, Long room, Date checkin, Date checkout, ReservationStatus status) {
+        this.user = user;
+        this.room = room;
+        this.checkin = checkin;
+        this.checkout = checkout;
+        this.status = status;
+    }
     public Long getId() {
         return id;
     }
