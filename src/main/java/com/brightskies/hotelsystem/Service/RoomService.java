@@ -24,9 +24,10 @@ public class RoomService {
         return (roomRepository.findAll()).stream().map(room -> new RoomDTO(room.getSection(), room.getType(), room.getStatus())).collect(Collectors.toList());
     }
 
-    public boolean addRoom(Room newRoom) {
-        if(roomRepository.findBySectionAndType(newRoom.getSection(), newRoom.getType()).isEmpty()) {
-            roomRepository.save(newRoom);
+    public boolean addRoom(RoomDTO roomDTO) {
+        Room room = new Room(roomDTO.section(), roomDTO.type(), roomDTO.status());
+        if(roomRepository.findBySectionAndType(room.getSection(), room.getType()).isEmpty()) {
+            roomRepository.save(room);
             return true;
         }
         return false;
@@ -38,5 +39,13 @@ public class RoomService {
 
     public List<RoomDTO> filterByType(RoomType type) {
         return (roomRepository.findByType(type)).stream().map(room -> new RoomDTO(room.getSection(), room.getType(), room.getStatus())).collect(Collectors.toList());
+    }
+
+    public List<RoomDTO> filterBySection(String section) {
+        return (roomRepository.findBySection(section)).stream().map(room -> new RoomDTO(room.getSection(), room.getType(), room.getStatus())).collect(Collectors.toList());
+    }
+
+    public List<String> displaySections() {
+        return (roomRepository.findSections());
     }
 }

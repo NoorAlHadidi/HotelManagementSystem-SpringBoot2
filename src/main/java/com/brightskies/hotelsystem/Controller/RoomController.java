@@ -3,7 +3,6 @@ package com.brightskies.hotelsystem.Controller;
 import com.brightskies.hotelsystem.DTO.RoomDTO;
 import com.brightskies.hotelsystem.Enum.RoomStatus;
 import com.brightskies.hotelsystem.Enum.RoomType;
-import com.brightskies.hotelsystem.Model.Room;
 import com.brightskies.hotelsystem.Service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,19 +27,41 @@ public class RoomController {
     }
 
     @GetMapping("/display/status/{status}")
-    public ResponseEntity<List<RoomDTO>> filterRoomsByStatus(@PathVariable RoomStatus status) {
-        return ResponseEntity.ok(roomService.filterByStatus(status));
+    public ResponseEntity<List<RoomDTO>> filterRoomsByStatus(@PathVariable String status) {
+        RoomStatus roomStatus;
+        try {
+            roomStatus = RoomStatus.valueOf(status.toLowerCase());
+        }
+        catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(roomService.filterByStatus(roomStatus));
     }
 
     @GetMapping("/display/type/{type}")
-    public ResponseEntity<List<RoomDTO>> filterRoomsByType(@PathVariable RoomType type) {
-        return ResponseEntity.ok(roomService.filterByType(type));
+    public ResponseEntity<List<RoomDTO>> filterRoomsByType(@PathVariable String type) {
+        RoomType roomType;
+        try {
+            roomType = RoomType.valueOf(type.toLowerCase());
+        }
+        catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(roomService.filterByType(roomType));
+    }
+
+    @GetMapping("/display/section/{section}")
+    public ResponseEntity<List<RoomDTO>> filterRoomsBySection(@PathVariable String section) {
+        if(roomService.displaySections().contains(section)) {
+            return ResponseEntity.ok(roomService.filterBySection(section));
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Void> addRoom(@RequestBody RoomDTO room) {
-        if(roomService.addRoom(new Room(room.section(), room.type(), room.status()))) {
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<RoomDTO> addRoom(@RequestBody RoomDTO roomDTO) {
+        if(roomService.addRoom(roomDTO)) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(roomDTO);
         }
         return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }

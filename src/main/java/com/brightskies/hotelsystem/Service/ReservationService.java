@@ -25,9 +25,10 @@ public class ReservationService {
         return (reservationRepository.findAll()).stream().map(reservation -> new ReservationDTO(reservation.getUser(), reservation.getRoom(), reservation.getCheckin(), reservation.getCheckout(), reservation.getStatus())).collect(Collectors.toList());
     }
 
-    public boolean addReservation(Reservation newReservation) {
-        if(reservationRepository.findOverlappingUserAndDates(newReservation.getUser(), newReservation.getCheckin(), newReservation.getCheckout()).isEmpty() && roomRepository.checkAvailability(newReservation.getRoom()).isPresent()) {
-            reservationRepository.save(newReservation);
+    public boolean addReservation(Reservation reservation) {
+        if(reservationRepository.findOverlappingUserAndDates(reservation.getUser(), reservation.getCheckin(), reservation.getCheckout()).isEmpty() && roomRepository.checkAvailability(reservation.getRoom()).isPresent()) {
+            reservationRepository.save(reservation);
+            roomRepository.bookRoom(reservation.getRoom());
             return true;
         }
         return false;
@@ -36,6 +37,7 @@ public class ReservationService {
     public boolean cancelReservation(Long id) {
         if(reservationRepository.findById(id).isPresent()) {
             reservationRepository.cancelReservation(id);
+            roomRepository.freeRoom(reservationRepository.findById(id).get().getRoom());
             return true;
         }
         return false;

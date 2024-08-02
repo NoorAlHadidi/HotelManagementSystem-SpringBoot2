@@ -1,6 +1,5 @@
 package com.brightskies.hotelsystem.Model;
 
-import com.brightskies.hotelsystem.Enum.RoomSection;
 import com.brightskies.hotelsystem.Enum.RoomStatus;
 import com.brightskies.hotelsystem.Enum.RoomType;
 
@@ -12,7 +11,7 @@ public class Room {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Enumerated(EnumType.STRING)
-    private RoomSection section;
+    private String section;
     @Enumerated(EnumType.STRING)
     private RoomType type;
     @Enumerated(EnumType.STRING)
@@ -22,7 +21,7 @@ public class Room {
 
     }
 
-    public Room(RoomSection section, RoomType type, RoomStatus status) {
+    public Room(String section, RoomType type, RoomStatus status) {
         this.section = section;
         this.type = type;
         this.status = status;
@@ -32,7 +31,7 @@ public class Room {
         return id;
     }
 
-    public RoomSection getSection() {
+    public String getSection() {
         return section;
     }
 

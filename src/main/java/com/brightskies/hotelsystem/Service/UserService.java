@@ -22,8 +22,9 @@ public class UserService {
         return (userRepository.findAll()).stream().map(user -> new UserDTO(user.getName(), user.getEmail(), user.getPhone())).collect(Collectors.toList());
     }
 
-    public boolean addUser(User user) {
-        if(userRepository.findByPhone(user.getPhone()).isEmpty()) {
+    public boolean addUser(UserDTO userDTO) {
+        User user = new User(userDTO.name(), userDTO.email(), userDTO.phone());
+        if(userRepository.findByEmailOrPhone(user.getEmail(), user.getPhone()).isEmpty()) {
             userRepository.save(user);
             return true;
         }

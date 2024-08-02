@@ -2,7 +2,7 @@ package com.brightskies.hotelsystem.Enum;
 
 public enum ReservationStatus {
     pending("pending"),
-    booked("booked"),
+    completed("completed"),
     cancelled("cancelled");
 
     private String name;

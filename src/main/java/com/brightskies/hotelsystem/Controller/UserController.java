@@ -21,9 +21,9 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Void> addUser(@RequestBody UserDTO userDTO) {
-        if(userService.addUser(new User(userDTO.name(), userDTO.email(), userDTO.phone()))) {
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<UserDTO> addUser(@RequestBody UserDTO userDTO) {
+        if(userService.addUser(userDTO)) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(userDTO);
         }
         return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
