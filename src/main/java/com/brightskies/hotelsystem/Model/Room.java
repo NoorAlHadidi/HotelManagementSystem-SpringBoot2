@@ -10,7 +10,6 @@ public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Enumerated(EnumType.STRING)
     private String section;
     @Enumerated(EnumType.STRING)
     private RoomType type;
