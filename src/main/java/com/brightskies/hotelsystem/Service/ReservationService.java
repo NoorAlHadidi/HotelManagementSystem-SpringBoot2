@@ -7,6 +7,7 @@ import com.brightskies.hotelsystem.Repository.RoomRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,5 +42,19 @@ public class ReservationService {
             return true;
         }
         return false;
+    }
+
+    public int updateReservationDates(Long id, Date checkin, Date checkout) {
+        if(reservationRepository.findById(id).isPresent()) {
+            Reservation reservation = reservationRepository.findById(id).get();
+            reservation.setCheckin(checkin);
+            reservation.setCheckout(checkout);
+            if(reservationRepository.findOverlappingUserAndDates(reservation.getUser(), reservation.getCheckin(), reservation.getCheckout()).isEmpty()) {
+                reservationRepository.save(reservation);
+                return 1;
+            }
+            return 0;
+        }
+        return -1;
     }
 }

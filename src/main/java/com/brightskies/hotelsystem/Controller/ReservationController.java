@@ -26,9 +26,9 @@ public class ReservationController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Void> addReservation(@RequestBody ReservationDTO reservation) {
+    public ResponseEntity<ReservationDTO> addReservation(@RequestBody ReservationDTO reservation) {
         if(reservationService.addReservation(new Reservation(reservation.user(), reservation.room(), reservation.checkin(), reservation.checkout(), reservation.status()))) {
-            return ResponseEntity.status(HttpStatus.CREATED).build();
+            return ResponseEntity.status(HttpStatus.CREATED).body(reservation);
         }
         return ResponseEntity.status(HttpStatus.CONFLICT).build();
     }
@@ -39,5 +39,16 @@ public class ReservationController {
             return ResponseEntity.status(HttpStatus.OK).build();
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    @PatchMapping("/update/dates/{id}")
+    public ResponseEntity<ReservationDTO> updateReservationDates(@PathVariable Long id, @RequestBody ReservationDTO reservationDTO) {
+        if (reservationService.updateReservationDates(id, reservationDTO.checkin(), reservationDTO.checkout()) == 1) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(reservationDTO);
+        } else if (reservationService.updateReservationDates(id, reservationDTO.checkin(), reservationDTO.checkout()) == 0) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 }

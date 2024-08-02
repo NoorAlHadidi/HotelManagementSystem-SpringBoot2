@@ -29,6 +29,15 @@ public class Reservation {
         this.checkout = checkout;
         this.status = status;
     }
+
+    public void setCheckin(Date checkin) {
+        this.checkin = checkin;
+    }
+
+    public void setCheckout(Date checkout) {
+        this.checkout = checkout;
+    }
+
     public Long getId() {
         return id;
     }
