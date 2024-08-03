@@ -1,0 +1,35 @@
+CREATE DATABASE hotel;
+USE hotel;
+
+-- creating tables
+CREATE TABLE room(
+	id BIGINT NOT NULL AUTO_INCREMENT,
+    section VARCHAR(100) NOT NULL,
+	type ENUM('singleroom', 'doubleroom', 'familyroom', 'suite'),
+	status ENUM('available', 'booked') NOT NULL,
+	PRIMARY KEY(id)
+);
+
+CREATE TABLE user(
+	id BIGINT NOT NULL AUTO_INCREMENT,
+	name VARCHAR(100) NOT NULL,
+	email VARCHAR(100),
+    phone VARCHAR(100) NOT NULL,
+	PRIMARY KEY(id)
+);
+
+CREATE TABLE reservation(
+	id BIGINT NOT NULL AUTO_INCREMENT,
+	user BIGINT NOT NULL,
+	room BIGINT NOT NULL,
+	checkin DATE,
+    checkout DATE,
+    status ENUM('pending', 'completed', 'cancelled') NOT NULL,
+	PRIMARY KEY(id),
+	FOREIGN KEY(user) REFERENCES user(id)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE,
+	FOREIGN KEY(room) REFERENCES room(id)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
+);
