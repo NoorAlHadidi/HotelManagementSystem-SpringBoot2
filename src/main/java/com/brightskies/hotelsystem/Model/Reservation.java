@@ -30,6 +30,10 @@ public class Reservation {
         this.status = status;
     }
 
+    public void setRoom(Long room) {
+        this.room = room;
+    }
+
     public void setCheckin(Date checkin) {
         this.checkin = checkin;
     }

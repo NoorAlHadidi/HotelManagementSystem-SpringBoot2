@@ -1,7 +1,6 @@
 package com.brightskies.hotelsystem.Controller;
 
 import com.brightskies.hotelsystem.DTO.UserDTO;
-import com.brightskies.hotelsystem.Model.User;
 import com.brightskies.hotelsystem.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
