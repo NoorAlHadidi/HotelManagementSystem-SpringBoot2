@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.sql.Date;
 import java.util.List;
 
@@ -27,8 +29,11 @@ public class ReservationController {
     }
 
     @GetMapping("/filter/date/{checkin}/{checkout}")
-    public ResponseEntity<List<ReservationDTO>> filterReservationsByDate(@PathVariable Date checkin, @PathVariable Date chechout) {
-        return ResponseEntity.ok(reservationService.filterByDate(checkin, chechout));
+    public ResponseEntity<List<ReservationDTO>> filterReservationsByDate(@PathVariable("checkin") String checkin, @PathVariable("checkout") String chechkout) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate checkinDate = LocalDate.parse(checkin, formatter);
+        LocalDate checkoutDate = LocalDate.parse(chechkout, formatter);
+        return ResponseEntity.ok(reservationService.filterByDate(Date.valueOf(checkinDate), Date.valueOf(checkoutDate)));
     }
 
     @GetMapping("/display/status/{status}")
