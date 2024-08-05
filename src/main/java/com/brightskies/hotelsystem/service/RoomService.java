@@ -30,7 +30,7 @@ public class RoomService {
     public void addRoom(RoomDTO roomDTO) throws Exception {
         Room room = new Room(roomDTO.section(), roomDTO.type(), roomDTO.status());
         if(roomRepository.findBySectionAndType(room.getSection(), room.getType()).isPresent()) {
-            throw new Exception("A room of that type exists in that section");
+            throw new Exception("A room of that type exists in that section.");
         }
         roomRepository.save(room);
     }
@@ -56,7 +56,7 @@ public class RoomService {
                     .map(room -> new RoomDTO(room.getSection(), room.getType(), room.getStatus()))
                     .collect(Collectors.toList());
         }
-        throw new Exception("No such section in the hotel");
+        throw new Exception("No such section in the hotel.");
     }
 
 }

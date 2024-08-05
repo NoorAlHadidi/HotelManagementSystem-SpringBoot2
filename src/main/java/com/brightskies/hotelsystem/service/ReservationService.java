@@ -43,8 +43,8 @@ public class ReservationService {
                 .collect(Collectors.toList());
     }
 
-    public List<ReservationDTO> filterByStatus(ReservationStatus status) {
-        return (reservationRepository.findByStatus(status))
+    public List<ReservationDTO> filterByStatus(String status) {
+        return (reservationRepository.findByStatus(ReservationStatus.valueOf(status)))
                 .stream()
                 .map(reservation -> new ReservationDTO(reservation.getUser(), reservation.getRoom(), reservation.getCheckin(), reservation.getCheckout(), reservation.getStatus()))
                 .collect(Collectors.toList());
@@ -58,7 +58,7 @@ public class ReservationService {
             return;
         }
         else if(roomRepository.checkAvailability(reservation.getRoom()).isEmpty()) {
-            throw new Exception("Selected room is already booked.");
+            throw new IllegalAccessException("Selected room is already booked.");
         }
         else {
             throw new Exception("User already has a reservation within these dates.");
@@ -81,7 +81,7 @@ public class ReservationService {
                 }
             }
         }
-        throw new NoSuchObjectException("Reservation does not exist");
+        throw new NoSuchObjectException("Reservation does not exist.");
     }
 
     public void completeReservation(Long id) throws Exception {
@@ -100,7 +100,7 @@ public class ReservationService {
                 }
             }
         }
-        throw new NoSuchObjectException("Reservation does not exist");
+        throw new NoSuchObjectException("Reservation does not exist.");
     }
 
     public void updateReservationDates(Long id, String checkin, String checkout) throws Exception {
@@ -117,7 +117,7 @@ public class ReservationService {
             }
             throw new Exception("User already has a reservation within these dates.");
         }
-        throw new NoSuchObjectException("Reservation does not exist");
+        throw new NoSuchObjectException("Reservation does not exist.");
     }
 
     public void updateReservationRoom(Long id, Long room) throws Exception {
@@ -131,6 +131,6 @@ public class ReservationService {
             }
             throw new Exception("Selected room is already booked.");
         }
-        throw new NoSuchObjectException("Reservation does not exist");
+        throw new NoSuchObjectException("Reservation does not exist.");
     }
 }

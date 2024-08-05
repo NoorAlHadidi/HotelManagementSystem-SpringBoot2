@@ -28,7 +28,7 @@ public class UserService {
     public void addUser(UserDTO userDTO) throws Exception {
         User user = new User(userDTO.name(), userDTO.email(), userDTO.phone());
         if(userRepository.findByEmailOrPhone(user.getEmail(), user.getPhone()).isPresent()) {
-            throw new Exception("A user with the same email/phone number is present");
+            throw new Exception("A user with the same email/phone number is present.");
         }
         userRepository.save(user);
     }
