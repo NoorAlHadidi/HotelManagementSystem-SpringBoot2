@@ -28,41 +28,32 @@ public class RoomController {
 
     @GetMapping("/display/status/{status}")
     public ResponseEntity<List<RoomDTO>> filterRoomsByStatus(@PathVariable String status) {
-        RoomStatus roomStatus;
-        try {
-            roomStatus = RoomStatus.valueOf(status.toLowerCase());
-        }
-        catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-        return ResponseEntity.ok(roomService.filterByStatus(roomStatus));
+        return ResponseEntity.ok(roomService.filterByStatus(status));
     }
 
     @GetMapping("/display/type/{type}")
     public ResponseEntity<List<RoomDTO>> filterRoomsByType(@PathVariable String type) {
-        RoomType roomType;
-        try {
-            roomType = RoomType.valueOf(type.toLowerCase());
-        }
-        catch (IllegalArgumentException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-        return ResponseEntity.ok(roomService.filterByType(roomType));
+        return ResponseEntity.ok(roomService.filterByType(type));
     }
 
     @GetMapping("/display/section/{section}")
-    public ResponseEntity<List<RoomDTO>> filterRoomsBySection(@PathVariable String section) {
-        if(roomService.displaySections().contains(section)) {
+    public ResponseEntity<?> filterRoomsBySection(@PathVariable String section) {
+        try {
             return ResponseEntity.ok(roomService.filterBySection(section));
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        catch(Exception exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+        }
     }
 
     @PostMapping("/add")
-    public ResponseEntity<RoomDTO> addRoom(@RequestBody RoomDTO roomDTO) {
-        if(roomService.addRoom(roomDTO)) {
+    public ResponseEntity<?> addRoom(@RequestBody RoomDTO roomDTO) {
+        try {
+            roomService.addRoom(roomDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(roomDTO);
         }
-        return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
+        }
     }
 }

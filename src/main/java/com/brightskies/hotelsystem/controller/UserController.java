@@ -20,11 +20,14 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<UserDTO> addUser(@RequestBody UserDTO userDTO) {
-        if(userService.addUser(userDTO)) {
+    public ResponseEntity<?> addUser(@RequestBody UserDTO userDTO) throws Exception {
+        try {
+            userService.addUser(userDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(userDTO);
         }
-        return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        catch(Exception exception) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
+        }
     }
 
     @GetMapping("/display")

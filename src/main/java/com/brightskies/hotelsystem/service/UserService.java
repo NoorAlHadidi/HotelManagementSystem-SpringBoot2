@@ -25,12 +25,11 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public boolean addUser(UserDTO userDTO) {
+    public void addUser(UserDTO userDTO) throws Exception {
         User user = new User(userDTO.name(), userDTO.email(), userDTO.phone());
-        if(userRepository.findByEmailOrPhone(user.getEmail(), user.getPhone()).isEmpty()) {
-            userRepository.save(user);
-            return true;
+        if(userRepository.findByEmailOrPhone(user.getEmail(), user.getPhone()).isPresent()) {
+            throw new Exception("A user with the same email/phone number is present");
         }
-        return false;
+        userRepository.save(user);
     }
 }

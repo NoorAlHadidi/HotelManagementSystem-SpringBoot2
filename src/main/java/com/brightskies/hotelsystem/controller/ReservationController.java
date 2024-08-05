@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.rmi.NoSuchObjectException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.sql.Date;
@@ -46,61 +47,69 @@ public class ReservationController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<ReservationDTO> addReservation(@RequestBody ReservationDTO reservationDTO) {
-        if(reservationDTO.checkin().after(reservationDTO.checkout())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-        if(reservationService.addReservation(reservationDTO)) {
+    public ResponseEntity<?> addReservation(@RequestBody ReservationDTO reservationDTO) {
+        try {
+            reservationService.addReservation(reservationDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(reservationDTO);
         }
-        return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        catch(Exception exception) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
+        }
     }
 
     @DeleteMapping("/cancel/{id}")
-    public ResponseEntity<Void> cancelReservation(@PathVariable Long id) {
-        if(reservationService.cancelReservation(id) == 1) {
-            return ResponseEntity.status(HttpStatus.OK).build();
+    public ResponseEntity<?> cancelReservation(@PathVariable Long id) {
+        try {
+            reservationService.cancelReservation(id);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
         }
-        else if(reservationService.cancelReservation(id) == 0) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        catch (NoSuchObjectException exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
-        else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
         }
     }
 
     @PatchMapping("/complete/{id}")
-    public ResponseEntity<Void> completeReservation(@PathVariable Long id) {
-        if(reservationService.completeReservation(id) == 1) {
-            return ResponseEntity.status(HttpStatus.OK).build();
+    public ResponseEntity<?> completeReservation(@PathVariable Long id) {
+        try {
+            reservationService.completeReservation(id);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
         }
-        else if(reservationService.completeReservation(id) == 0) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        catch (NoSuchObjectException exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
-        else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
         }
     }
 
     @PatchMapping("/update/dates/{id}")
-    public ResponseEntity<Void> updateReservationDates(@PathVariable Long id, @RequestParam String checkin, @RequestParam String checkout) {
-        if (reservationService.updateReservationDates(id, checkin, checkout) == 1) {
+    public ResponseEntity<?> updateReservationDates(@PathVariable Long id, @RequestParam String checkin, @RequestParam String checkout) {
+        try {
+            reservationService.updateReservationDates(id, checkin, checkout);
             return ResponseEntity.status(HttpStatus.CREATED).build();
-        } else if (reservationService.updateReservationDates(id, checkin, checkout) == 0) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        catch (NoSuchObjectException exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+        }
+        catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
         }
     }
 
     @PatchMapping("/update/room/{id}")
-    public ResponseEntity<Void> updateReservationRoom(@PathVariable Long id, @RequestParam Long room) {
-        if (reservationService.updateReservationRoom(id, room) == 1) {
+    public ResponseEntity<?> updateReservationRoom(@PathVariable Long id, @RequestParam Long room) {
+        try {
+            reservationService.updateReservationRoom(id, room);
             return ResponseEntity.status(HttpStatus.CREATED).build();
-        } else if (reservationService.updateReservationRoom(id, room) == 0) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        catch (NoSuchObjectException exception) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
+        }
+        catch (Exception exception) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());
         }
     }
 }

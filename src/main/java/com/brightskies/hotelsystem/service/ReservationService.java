@@ -8,6 +8,7 @@ import com.brightskies.hotelsystem.repository.RoomRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.rmi.NoSuchObjectException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -49,41 +50,60 @@ public class ReservationService {
                 .collect(Collectors.toList());
     }
 
-    public boolean addReservation(ReservationDTO reservationDTO) {
+    public void addReservation(ReservationDTO reservationDTO) throws Exception {
         Reservation reservation = new Reservation(reservationDTO.user(), reservationDTO.room(), reservationDTO.checkin(), reservationDTO.checkout(), reservationDTO.status());
         if(reservationRepository.findOverlappingUserAndDates(reservation.getUser(), reservation.getCheckin(), reservation.getCheckout()).isEmpty() && roomRepository.checkAvailability(reservation.getRoom()).isPresent()) {
             reservationRepository.save(reservation);
             roomRepository.bookRoom(reservation.getRoom());
-            return true;
+            return;
         }
-        return false;
+        else if(roomRepository.checkAvailability(reservation.getRoom()).isEmpty()) {
+            throw new Exception("Selected room is already booked.");
+        }
+        else {
+            throw new Exception("User already has a reservation within these dates.");
+        }
     }
 
-    public int cancelReservation(Long id) {
+    public void cancelReservation(Long id) throws Exception {
         if(reservationRepository.findById(id).isPresent()) {
             if(reservationRepository.findById(id).get().getStatus().equals(ReservationStatus.pending)) {
                 reservationRepository.cancelReservation(id);
                 roomRepository.freeRoom(reservationRepository.findById(id).get().getRoom());
-                return 1;
+                return;
             }
-            return 0;
+            else {
+                if(reservationRepository.findById(id).get().getStatus().equals(ReservationStatus.completed)) {
+                    throw new Exception("Reservation was completed.");
+                }
+                else {
+                    throw new Exception("Reservation has already been cancelled.");
+                }
+            }
         }
-        return -1;
+        throw new NoSuchObjectException("Reservation does not exist");
     }
 
-    public int completeReservation(Long id) {
+    public void completeReservation(Long id) throws Exception {
         if(reservationRepository.findById(id).isPresent()) {
             if(reservationRepository.findById(id).get().getStatus().equals(ReservationStatus.pending)) {
                 reservationRepository.completeReservation(id);
                 roomRepository.freeRoom(reservationRepository.findById(id).get().getRoom());
-                return 1;
+                return;
             }
-            return 0;
+            else {
+                if(reservationRepository.findById(id).get().getStatus().equals(ReservationStatus.completed)) {
+                    throw new Exception("Reservation has already been completed.");
+                }
+                else {
+                    throw new Exception("Reservation was cancelled.");
+                }
+            }
         }
-        return -1;
+        throw new NoSuchObjectException("Reservation does not exist");
     }
 
-    public int updateReservationDates(Long id, String checkin, String checkout) {
+    public void updateReservationDates(Long id, String checkin, String checkout) throws Exception {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate checkinDate = LocalDate.parse(checkin, formatter);
         LocalDate checkoutDate = LocalDate.parse(checkout, formatter);
@@ -93,24 +113,24 @@ public class ReservationService {
             reservation.setCheckout(Date.valueOf(checkoutDate));
             if(reservationRepository.findOverlappingUserAndDates(reservation.getUser(), reservation.getCheckin(), reservation.getCheckout()).isEmpty()) {
                 reservationRepository.save(reservation);
-                return 1;
+                return;
             }
-            return 0;
+            throw new Exception("User already has a reservation within these dates.");
         }
-        return -1;
+        throw new NoSuchObjectException("Reservation does not exist");
     }
 
-    public int updateReservationRoom(Long id, Long room) {
+    public void updateReservationRoom(Long id, Long room) throws Exception {
         if(reservationRepository.findById(id).isPresent()) {
             Reservation reservation = reservationRepository.findById(id).get();
             if(roomRepository.checkAvailability(room).isPresent()) {
                 reservation.setRoom(room);
                 reservationRepository.save(reservation);
                 roomRepository.bookRoom(room);
-                return 1;
+                return;
             }
-            return 0;
+            throw new Exception("Selected room is already booked.");
         }
-        return -1;
+        throw new NoSuchObjectException("Reservation does not exist");
     }
 }
