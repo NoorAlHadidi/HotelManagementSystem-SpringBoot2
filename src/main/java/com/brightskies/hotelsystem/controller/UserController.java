@@ -1,7 +1,7 @@
-package com.brightskies.hotelsystem.Controller;
+package com.brightskies.hotelsystem.controller;
 
-import com.brightskies.hotelsystem.DTO.UserDTO;
-import com.brightskies.hotelsystem.Service.UserService;
+import com.brightskies.hotelsystem.dto.UserDTO;
+import com.brightskies.hotelsystem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

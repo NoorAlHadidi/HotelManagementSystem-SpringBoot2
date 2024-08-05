@@ -1,6 +1,6 @@
-package com.brightskies.hotelsystem.Model;
+package com.brightskies.hotelsystem.model;
 
-import com.brightskies.hotelsystem.Enum.ReservationStatus;
+import com.brightskies.hotelsystem.enums.ReservationStatus;
 
 import java.sql.Date;
 

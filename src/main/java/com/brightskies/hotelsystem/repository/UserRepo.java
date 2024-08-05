@@ -1,6 +1,6 @@
-package com.brightskies.hotelsystem.Repository;
+package com.brightskies.hotelsystem.repository;
 
-import com.brightskies.hotelsystem.Model.User;
+import com.brightskies.hotelsystem.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

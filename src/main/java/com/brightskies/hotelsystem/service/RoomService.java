@@ -1,10 +1,10 @@
-package com.brightskies.hotelsystem.Service;
+package com.brightskies.hotelsystem.service;
 
-import com.brightskies.hotelsystem.DTO.RoomDTO;
-import com.brightskies.hotelsystem.Enum.RoomStatus;
-import com.brightskies.hotelsystem.Enum.RoomType;
-import com.brightskies.hotelsystem.Model.Room;
-import com.brightskies.hotelsystem.Repository.RoomRepo;
+import com.brightskies.hotelsystem.dto.RoomDTO;
+import com.brightskies.hotelsystem.enums.RoomStatus;
+import com.brightskies.hotelsystem.enums.RoomType;
+import com.brightskies.hotelsystem.model.Room;
+import com.brightskies.hotelsystem.repository.RoomRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,10 @@ public class RoomService {
     }
 
     public List<RoomDTO> displayRooms() {
-        return (roomRepository.findAll()).stream().map(room -> new RoomDTO(room.getSection(), room.getType(), room.getStatus())).collect(Collectors.toList());
+        return (roomRepository.findAll())
+                .stream()
+                .map(room -> new RoomDTO(room.getSection(), room.getType(), room.getStatus()))
+                .collect(Collectors.toList());
     }
 
     public boolean addRoom(RoomDTO roomDTO) {

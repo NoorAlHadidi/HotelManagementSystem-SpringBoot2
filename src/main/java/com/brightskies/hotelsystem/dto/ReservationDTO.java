@@ -1,6 +1,6 @@
-package com.brightskies.hotelsystem.DTO;
+package com.brightskies.hotelsystem.dto;
 
-import com.brightskies.hotelsystem.Enum.ReservationStatus;
+import com.brightskies.hotelsystem.enums.ReservationStatus;
 
 import java.sql.Date;
 

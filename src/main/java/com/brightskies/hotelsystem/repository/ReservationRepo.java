@@ -1,9 +1,7 @@
-package com.brightskies.hotelsystem.Repository;
+package com.brightskies.hotelsystem.repository;
 
-import com.brightskies.hotelsystem.Enum.ReservationStatus;
-import com.brightskies.hotelsystem.Enum.RoomStatus;
-import com.brightskies.hotelsystem.Model.Reservation;
-import com.brightskies.hotelsystem.Model.Room;
+import com.brightskies.hotelsystem.enums.ReservationStatus;
+import com.brightskies.hotelsystem.model.Reservation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -26,7 +24,7 @@ public interface ReservationRepo extends JpaRepository<Reservation, Long> {
     @Query("UPDATE Reservation r SET r.status = 'completed' WHERE r.id = :id")
     void completeReservation(@Param("id") Long id);
     @Query("SELECT r FROM Reservation r WHERE r.user = :user AND ((r.checkin BETWEEN :checkin AND :checkout) OR (r.checkin < :checkin AND r.checkout > :checkin))")
-    Optional<Reservation> findOverlappingUserAndDates(@Param("user") Long user, @Param("checkin") Date checkin, @Param("checkout") Date checkout);
+    List<Reservation> findOverlappingUserAndDates(@Param("user") Long user, @Param("checkin") Date checkin, @Param("checkout") Date checkout);
     @Query("SELECT r FROM Reservation r WHERE (r.checkin BETWEEN :checkin AND :checkout) AND (r.checkout BETWEEN :checkin AND :checkout)")
     List<Reservation> findByDate(@Param("checkin") Date checkin, @Param("checkout") Date checkout);
     List<Reservation> findByStatus(ReservationStatus status);

@@ -1,9 +1,9 @@
-package com.brightskies.hotelsystem.Controller;
+package com.brightskies.hotelsystem.controller;
 
-import com.brightskies.hotelsystem.DTO.RoomDTO;
-import com.brightskies.hotelsystem.Enum.RoomStatus;
-import com.brightskies.hotelsystem.Enum.RoomType;
-import com.brightskies.hotelsystem.Service.RoomService;
+import com.brightskies.hotelsystem.dto.RoomDTO;
+import com.brightskies.hotelsystem.enums.RoomStatus;
+import com.brightskies.hotelsystem.enums.RoomType;
+import com.brightskies.hotelsystem.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

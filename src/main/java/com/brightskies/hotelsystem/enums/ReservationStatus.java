@@ -1,4 +1,4 @@
-package com.brightskies.hotelsystem.Enum;
+package com.brightskies.hotelsystem.enums;
 
 public enum ReservationStatus {
     pending("pending"),

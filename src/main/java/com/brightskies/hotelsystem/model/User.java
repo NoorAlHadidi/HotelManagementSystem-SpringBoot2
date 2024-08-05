@@ -1,4 +1,4 @@
-package com.brightskies.hotelsystem.Model;
+package com.brightskies.hotelsystem.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

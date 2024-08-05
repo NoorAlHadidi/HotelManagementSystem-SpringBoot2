@@ -1,8 +1,8 @@
-package com.brightskies.hotelsystem.Repository;
+package com.brightskies.hotelsystem.repository;
 
-import com.brightskies.hotelsystem.Enum.RoomStatus;
-import com.brightskies.hotelsystem.Enum.RoomType;
-import com.brightskies.hotelsystem.Model.Room;
+import com.brightskies.hotelsystem.enums.RoomStatus;
+import com.brightskies.hotelsystem.enums.RoomType;
+import com.brightskies.hotelsystem.model.Room;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

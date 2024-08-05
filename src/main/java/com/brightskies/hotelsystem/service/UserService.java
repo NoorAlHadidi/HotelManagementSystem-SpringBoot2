@@ -1,8 +1,8 @@
-package com.brightskies.hotelsystem.Service;
+package com.brightskies.hotelsystem.service;
 
-import com.brightskies.hotelsystem.DTO.UserDTO;
-import com.brightskies.hotelsystem.Model.User;
-import com.brightskies.hotelsystem.Repository.UserRepo;
+import com.brightskies.hotelsystem.dto.UserDTO;
+import com.brightskies.hotelsystem.model.User;
+import com.brightskies.hotelsystem.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,10 @@ public class UserService {
     }
 
     public List<UserDTO> displayUsers() {
-        return (userRepository.findAll()).stream().map(user -> new UserDTO(user.getName(), user.getEmail(), user.getPhone())).collect(Collectors.toList());
+        return (userRepository.findAll())
+                .stream()
+                .map(user -> new UserDTO(user.getName(), user.getEmail(), user.getPhone()))
+                .collect(Collectors.toList());
     }
 
     public boolean addUser(UserDTO userDTO) {

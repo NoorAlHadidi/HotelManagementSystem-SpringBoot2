@@ -1,8 +1,8 @@
-package com.brightskies.hotelsystem.Controller;
+package com.brightskies.hotelsystem.controller;
 
-import com.brightskies.hotelsystem.DTO.ReservationDTO;
-import com.brightskies.hotelsystem.Enum.ReservationStatus;
-import com.brightskies.hotelsystem.Service.ReservationService;
+import com.brightskies.hotelsystem.dto.ReservationDTO;
+import com.brightskies.hotelsystem.enums.ReservationStatus;
+import com.brightskies.hotelsystem.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,12 +28,9 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.displayReservations());
     }
 
-    @GetMapping("/filter/date/{checkin}/{checkout}")
-    public ResponseEntity<List<ReservationDTO>> filterReservationsByDate(@PathVariable("checkin") String checkin, @PathVariable("checkout") String chechkout) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate checkinDate = LocalDate.parse(checkin, formatter);
-        LocalDate checkoutDate = LocalDate.parse(chechkout, formatter);
-        return ResponseEntity.ok(reservationService.filterByDate(Date.valueOf(checkinDate), Date.valueOf(checkoutDate)));
+    @GetMapping("/filter/date")
+    public ResponseEntity<List<ReservationDTO>> filterReservationsByDate(@RequestParam String checkin, @RequestParam String checkout) {
+        return ResponseEntity.ok(reservationService.filterByDate(checkin, checkout));
     }
 
     @GetMapping("/display/status/{status}")
@@ -86,10 +83,10 @@ public class ReservationController {
     }
 
     @PatchMapping("/update/dates/{id}")
-    public ResponseEntity<ReservationDTO> updateReservationDates(@PathVariable Long id, @RequestBody ReservationDTO reservationDTO) {
-        if (reservationService.updateReservationDates(id, reservationDTO.checkin(), reservationDTO.checkout()) == 1) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(reservationDTO);
-        } else if (reservationService.updateReservationDates(id, reservationDTO.checkin(), reservationDTO.checkout()) == 0) {
+    public ResponseEntity<Void> updateReservationDates(@PathVariable Long id, @RequestParam String checkin, @RequestParam String checkout) {
+        if (reservationService.updateReservationDates(id, checkin, checkout) == 1) {
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } else if (reservationService.updateReservationDates(id, checkin, checkout) == 0) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -97,10 +94,10 @@ public class ReservationController {
     }
 
     @PatchMapping("/update/room/{id}")
-    public ResponseEntity<ReservationDTO> updateReservationRoom(@PathVariable Long id, @RequestBody ReservationDTO reservationDTO) {
-        if (reservationService.updateReservationRoom(id, reservationDTO.room()) == 1) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(reservationDTO);
-        } else if (reservationService.updateReservationDates(id, reservationDTO.checkin(), reservationDTO.checkout()) == 0) {
+    public ResponseEntity<Void> updateReservationRoom(@PathVariable Long id, @RequestParam Long room) {
+        if (reservationService.updateReservationRoom(id, room) == 1) {
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } else if (reservationService.updateReservationRoom(id, room) == 0) {
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

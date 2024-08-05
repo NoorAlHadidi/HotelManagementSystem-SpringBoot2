@@ -1,7 +1,7 @@
-package com.brightskies.hotelsystem.Model;
+package com.brightskies.hotelsystem.model;
 
-import com.brightskies.hotelsystem.Enum.RoomStatus;
-import com.brightskies.hotelsystem.Enum.RoomType;
+import com.brightskies.hotelsystem.enums.RoomStatus;
+import com.brightskies.hotelsystem.enums.RoomType;
 
 import jakarta.persistence.*;
 
