@@ -7,6 +7,7 @@ import com.brightskies.hotelsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +19,14 @@ public class UserService {
     private UserRepository userRepository;
     private BCryptPasswordEncoder passwordEncoder;
     private AuthenticationManager authenticationManager;
+    private JWTService jwtService;
 
     @Autowired
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JWTService jwtService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
     }
 
     public List<UserDTO> displayUsers() {
@@ -42,9 +45,19 @@ public class UserService {
         return new UserDTO(user.getName(), user.getEmail(), user.getPhone(), user.getRole());
     }
 
-    public User existingUser(String email, String password) throws Exception {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
-        return userRepository.findByEmail(email).orElseThrow(() -> new Exception("User does not exist"));
+//    public User existingUser(String email, String password) throws Exception {
+//        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+//        return userRepository.findByEmail(email).orElseThrow(() -> new Exception("User does not exist"));
+//    }
+
+    public String existingUser(String email, String password) throws Exception {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+        if (authentication.isAuthenticated()) {
+            return jwtService.generateToken(email);
+        }
+        else {
+            throw new Exception("User not authenticated");
+        }
     }
 
     public void deleteUser(String email) throws Exception {
