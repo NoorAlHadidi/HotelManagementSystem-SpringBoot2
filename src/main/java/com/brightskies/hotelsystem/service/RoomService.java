@@ -4,7 +4,7 @@ import com.brightskies.hotelsystem.dto.RoomDTO;
 import com.brightskies.hotelsystem.enums.RoomStatus;
 import com.brightskies.hotelsystem.enums.RoomType;
 import com.brightskies.hotelsystem.model.Room;
-import com.brightskies.hotelsystem.repository.RoomRepo;
+import com.brightskies.hotelsystem.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +13,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class RoomService {
-    private RoomRepo roomRepository;
+    private RoomRepository roomRepository;
 
     @Autowired
-    public RoomService(RoomRepo roomRepository) {
+    public RoomService(RoomRepository roomRepository) {
         this.roomRepository =  roomRepository;
     }
 

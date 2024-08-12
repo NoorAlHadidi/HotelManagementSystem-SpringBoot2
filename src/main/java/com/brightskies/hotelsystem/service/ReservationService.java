@@ -3,8 +3,8 @@ package com.brightskies.hotelsystem.service;
 import com.brightskies.hotelsystem.dto.ReservationDTO;
 import com.brightskies.hotelsystem.enums.ReservationStatus;
 import com.brightskies.hotelsystem.model.Reservation;
-import com.brightskies.hotelsystem.repository.ReservationRepo;
-import com.brightskies.hotelsystem.repository.RoomRepo;
+import com.brightskies.hotelsystem.repository.ReservationRepository;
+import com.brightskies.hotelsystem.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,11 +17,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class ReservationService {
-    private ReservationRepo reservationRepository;
-    private RoomRepo roomRepository;
+    private ReservationRepository reservationRepository;
+    private RoomRepository roomRepository;
 
     @Autowired
-    public ReservationService(ReservationRepo reservationRepository, RoomRepo roomRepository) {
+    public ReservationService(ReservationRepository reservationRepository, RoomRepository roomRepository) {
         this.reservationRepository =  reservationRepository;
         this.roomRepository = roomRepository;
     }

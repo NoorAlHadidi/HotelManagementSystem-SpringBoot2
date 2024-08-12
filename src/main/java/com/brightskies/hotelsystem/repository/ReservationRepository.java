@@ -11,10 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Repository
-public interface ReservationRepo extends JpaRepository<Reservation, Long> {
+public interface ReservationRepository extends JpaRepository<Reservation, Long> {
     @Modifying
     @Transactional
     @Query("UPDATE Reservation r SET r.status = 'cancelled' WHERE r.id = :id")

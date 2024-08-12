@@ -2,7 +2,7 @@ package com.brightskies.hotelsystem.service;
 
 import com.brightskies.hotelsystem.dto.UserDTO;
 import com.brightskies.hotelsystem.model.User;
-import com.brightskies.hotelsystem.repository.UserRepo;
+import com.brightskies.hotelsystem.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +11,10 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService {
-    private UserRepo userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    public UserService(UserRepo userRepository) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

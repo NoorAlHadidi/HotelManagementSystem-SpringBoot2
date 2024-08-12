@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface RoomRepo extends JpaRepository<Room, Long> {
+public interface RoomRepository extends JpaRepository<Room, Long> {
     List<Room> findByStatus(RoomStatus status);
     List<Room> findByType(RoomType type);
     List<Room> findBySection(String section);
