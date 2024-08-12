@@ -1,4 +1,6 @@
 package com.brightskies.hotelsystem.dto;
 
-public record UserDTO(String name, String email, String phone) {
+import com.brightskies.hotelsystem.enums.UserRole;
+
+public record UserDTO(String name, String email, String phone, UserRole role) {
 }
