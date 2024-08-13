@@ -1,6 +1,7 @@
 package com.brightskies.hotelsystem.service;
 
 import com.brightskies.hotelsystem.dto.RoomDTO;
+import com.brightskies.hotelsystem.dto.UserDTO;
 import com.brightskies.hotelsystem.enums.RoomStatus;
 import com.brightskies.hotelsystem.enums.RoomType;
 import com.brightskies.hotelsystem.model.Room;
@@ -27,12 +28,13 @@ public class RoomService {
                 .collect(Collectors.toList());
     }
 
-    public void addRoom(RoomDTO roomDTO) throws Exception {
-        Room room = new Room(roomDTO.section(), roomDTO.type(), roomDTO.status());
-        if(roomRepository.findBySectionAndType(room.getSection(), room.getType()).isPresent()) {
+    public RoomDTO addRoom(RoomDTO roomDTO) throws Exception {
+        if(roomRepository.findBySectionAndType(roomDTO.section(), roomDTO.type()).isPresent()) {
             throw new Exception("A room of that type exists in that section.");
         }
+        Room room = new Room(roomDTO.section(), roomDTO.type(), roomDTO.status());
         roomRepository.save(room);
+        return new RoomDTO(room.getSection(), room.getType(), room.getStatus());
     }
 
     public List<RoomDTO> filterByStatus(String status) {

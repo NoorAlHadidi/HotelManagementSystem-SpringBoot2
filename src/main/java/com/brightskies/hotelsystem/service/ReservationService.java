@@ -50,12 +50,12 @@ public class ReservationService {
                 .collect(Collectors.toList());
     }
 
-    public void addReservation(ReservationDTO reservationDTO) throws Exception {
-        Reservation reservation = new Reservation(reservationDTO.user(), reservationDTO.room(), reservationDTO.checkin(), reservationDTO.checkout(), reservationDTO.status());
-        if(roomRepository.checkAvailability(reservation.getRoom()).isPresent()) {
+    public ReservationDTO addReservation(ReservationDTO reservationDTO) throws Exception {
+        if(roomRepository.checkAvailability(reservationDTO.room()).isPresent()) {
+            Reservation reservation = new Reservation(reservationDTO.user(), reservationDTO.room(), reservationDTO.checkin(), reservationDTO.checkout(), reservationDTO.status());
             reservationRepository.save(reservation);
             roomRepository.bookRoom(reservation.getRoom());
-            return;
+            return new ReservationDTO(reservation.getUser(), reservation.getRoom(), reservation.getCheckin(), reservation.getCheckout(), reservation.getStatus());
         }
         else {
             throw new Exception("Selected room is already booked.");

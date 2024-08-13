@@ -39,8 +39,7 @@ public class RoomController {
     @PostMapping("/add")
     public ResponseEntity<?> addRoom(@RequestBody RoomDTO roomDTO) {
         try {
-            roomService.addRoom(roomDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(roomDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(roomService.addRoom(roomDTO));
         }
         catch (Exception exception) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(exception.getMessage());

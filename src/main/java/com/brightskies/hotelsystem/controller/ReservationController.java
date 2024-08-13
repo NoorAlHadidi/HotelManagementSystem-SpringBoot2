@@ -44,8 +44,7 @@ public class ReservationController {
     @PostMapping("/add")
     public ResponseEntity<?> addReservation(@RequestBody ReservationDTO reservationDTO) {
         try {
-            reservationService.addReservation(reservationDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(reservationDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(reservationService.addReservation(reservationDTO));
         }
         catch(Exception exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
