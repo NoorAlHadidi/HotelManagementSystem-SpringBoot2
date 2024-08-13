@@ -122,7 +122,7 @@ public class ReservationController {
             @ApiResponse(responseCode = "500", description = "Internal server error", content =
                     { @Content(mediaType = "application/json") })
     })
-    @PreAuthorize("hasAnyRole('admin', 'customer')")
+    @PreAuthorize("hasRole('admin')")
     @PatchMapping("/complete/{id}")
     public ResponseEntity<?> completeReservation(@PathVariable Long id) {
         try {

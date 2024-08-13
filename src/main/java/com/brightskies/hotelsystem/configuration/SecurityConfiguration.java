@@ -31,6 +31,27 @@ public class SecurityConfiguration {
             "/v3/api-docs/**",
     };
 
+    private static final String[] authorizationAdmin = {
+            "/api/room/add",
+            "/api/reservation/complete/**",
+            "/api/user/delete/**",
+    };
+
+    private static final String[] authorizationAdminAndStaff = {
+            "/api/room/display",
+            "/api/room/display/**",
+            "/api/reservation/filer/date",
+            "/api/reservation/display",
+            "/api/reservation/display/**",
+            "/api/user/display",
+    };
+
+    private static final String[] authorizationAdminAndCustomer = {
+            "/api/reservation/add",
+            "/api/reservation/update/**",
+            "/api/reservation/cancel/**",
+    };
+
     @Autowired
     public SecurityConfiguration(JWTFilter jwtFilter, UserDetailsService userDetailsService) {
         this.jwtFilter = jwtFilter;
@@ -42,6 +63,9 @@ public class SecurityConfiguration {
         return http.csrf(customizer -> customizer.disable()).
                 authorizeHttpRequests(request -> request
                         .requestMatchers(authorizationWhiteList).permitAll()
+                        .requestMatchers(authorizationAdmin).hasRole("admin")
+                        .requestMatchers(authorizationAdminAndStaff).hasAnyRole("admin", "staff")
+                        .requestMatchers(authorizationAdminAndCustomer).hasAnyRole("admin", "customer")
                         .anyRequest().authenticated()).
                 httpBasic(Customizer.withDefaults()).
                 sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
