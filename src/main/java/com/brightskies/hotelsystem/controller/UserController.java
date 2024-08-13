@@ -2,7 +2,6 @@ package com.brightskies.hotelsystem.controller;
 
 import com.brightskies.hotelsystem.dto.SignUpDTO;
 import com.brightskies.hotelsystem.dto.UserDTO;
-import com.brightskies.hotelsystem.model.User;
 import com.brightskies.hotelsystem.service.JWTService;
 import com.brightskies.hotelsystem.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -67,6 +66,19 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "Displays all users")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Displayed", content =
+                    { @Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class, type = "array")) }),
+            @ApiResponse(responseCode = "500", description = "Internal server error", content =
+                    { @Content(mediaType = "application/json")})
+    })
+    @PreAuthorize("hasAnyRole('admin', 'staff')")
+    @GetMapping("/display")
+    public ResponseEntity<List<UserDTO>> displayUsers() {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.displayUsers());
+    }
+
     @Operation(summary = "Deletes a user")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Deleted"),
@@ -74,8 +86,8 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Internal server error", content =
                     { @Content(mediaType = "application/json")})
     })
-    @DeleteMapping("/delete/{email}")
     @PreAuthorize("hasRole('admin')")
+    @DeleteMapping("/delete/{email}")
     public ResponseEntity<?> deleteUser(@PathVariable String email) {
         try {
             userService.deleteUser(email);
@@ -84,18 +96,5 @@ public class UserController {
         catch(Exception exception) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception.getMessage());
         }
-    }
-
-    @Operation(summary = "Displays all users")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Displayed", content =
-                    { @Content(mediaType = "application/json", schema = @Schema(implementation = UserDTO.class, type = "array")) }),
-            @ApiResponse(responseCode = "500", description = "Internal server error", content =
-                    { @Content(mediaType = "application/json")})
-    })
-    @GetMapping("/display")
-    @PreAuthorize("hasAnyRole('admin', 'staff')")
-    public ResponseEntity<List<UserDTO>> displayUsers() {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.displayUsers());
     }
 }

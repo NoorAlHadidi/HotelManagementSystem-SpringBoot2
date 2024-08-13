@@ -52,16 +52,13 @@ public class ReservationService {
 
     public void addReservation(ReservationDTO reservationDTO) throws Exception {
         Reservation reservation = new Reservation(reservationDTO.user(), reservationDTO.room(), reservationDTO.checkin(), reservationDTO.checkout(), reservationDTO.status());
-        if(reservationRepository.findOverlappingUserAndDates(reservation.getUser(), reservation.getCheckin(), reservation.getCheckout()).isEmpty() && roomRepository.checkAvailability(reservation.getRoom()).isPresent()) {
+        if(roomRepository.checkAvailability(reservation.getRoom()).isPresent()) {
             reservationRepository.save(reservation);
             roomRepository.bookRoom(reservation.getRoom());
             return;
         }
-        else if(roomRepository.checkAvailability(reservation.getRoom()).isEmpty()) {
-            throw new IllegalAccessException("Selected room is already booked.");
-        }
         else {
-            throw new Exception("User already has a reservation within these dates.");
+            throw new Exception("Selected room is already booked.");
         }
     }
 
@@ -111,13 +108,10 @@ public class ReservationService {
             Reservation reservation = reservationRepository.findById(id).get();
             reservation.setCheckin(Date.valueOf(checkinDate));
             reservation.setCheckout(Date.valueOf(checkoutDate));
-            if(reservationRepository.findOverlappingUserAndDates(reservation.getUser(), reservation.getCheckin(), reservation.getCheckout()).isEmpty()) {
-                reservationRepository.save(reservation);
-                return;
-            }
-            throw new Exception("User already has a reservation within these dates.");
+            reservationRepository.save(reservation);
+            return;
         }
-        throw new NoSuchObjectException("Reservation does not exist.");
+        throw new Exception("Reservation does not exist.");
     }
 
     public void updateReservationRoom(Long id, Long room) throws Exception {
